@@ -13,4 +13,3 @@ Download your favorite movie.
     - BeautifulSoup4
     - requests
     - deluge-console
----
