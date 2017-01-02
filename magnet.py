@@ -2,11 +2,11 @@ import requests
 import os, sys
 from bs4 import BeautifulSoup
 
-tmp_url = 'http://extratorrent.cc/search/?search='
+tmp_url = 'http://extra.to/search/?search='
 
 query = input('Enter movie name > ')
 
-url = tmp_url + query + '&s_cat=4/'
+url = tmp_url + query + '&s_cat=4&pp=10&srt=seeds&order=desc/'
 
 r0 = requests.get(url)
 
