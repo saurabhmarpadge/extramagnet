@@ -1,53 +1,74 @@
-import requests
 import os, sys
 from bs4 import BeautifulSoup
 
-tmp_url = 'http://extra.to/search/?search='
+import os
+name = input('Enter moive> ')
+os.system('phantomjs download.js '+name)
 
-query = input('Enter movie name > ')
+page_name="html_page.html"
+local_page = open(page_name,"r")
+soup = BeautifulSoup(local_page,"lxml")
 
-url = tmp_url + query + '&s_cat=4&pp=10&srt=seeds&order=desc/'
-
-r0 = requests.get(url)
-
-soup = BeautifulSoup(r0.content,"html.parser")
 
 tlz = soup.find_all("tr",{"class":"tlz"})
 tlr = soup.find_all("tr",{"class":"tlr"})
 
+
 if(tlz == [] and tlr == []):
-	print ("The Movie \"" + query + "\" is not Available.")
-
+	print ("The Movie \"" + name + "\" is not Available.")
 else:
+	count = 0
 
-for item in tlz:
-	print(item.contents[0].find_all("a", {"title":"Magnet link"})[0].get("href"))	
-	print(item.contents[4].text)
-	print(item.contents[5].text)
-	print(item.contents[6].text)
-	print(item.contents[7].find_all("div")[0].get("class")[0])
-	print("\n")
+	for item in tlz:
+		count = count + 1
+	for item in tlr:
+		count = count + 1
 
-for item in tlr:
-	print(item.contents[0].find_all("a", {"title":"Magnet link"})[0].get("href"))	
-	print(item.contents[4].text)
-	print(item.contents[5].text)
-	print(item.contents[6].text)
-	print(item.contents[7].find_all("div")[0].get("class")[0])
-	print("\n")
-  
-"""
-It returns magnet link
-Processing is remaining
+	movie = []
+	for i in range(count):
+		movie.append([])
+	i = 0
+	
+	for item in tlr:
+		movie[i].append(item.contents[0].find_all("a", {"title":"Magnet link"})[0].get("href"))	
+		movie[i].append(item.contents[4].text)
+		movie[i].append(item.contents[5].text)
+		movie[i].append(item.contents[6].text)
+		movie[i].append(item.contents[7].find_all("div")[0].get("class")[0])
+		i = i + 1
 
+	for item in tlz:
+		movie[i].append(item.contents[0].find_all("a", {"title":"Magnet link"})[0].get("href"))	
+		movie[i].append(item.contents[4].text)
+		movie[i].append(item.contents[5].text)
+		movie[i].append(item.contents[6].text)
+		movie[i].append(item.contents[7].find_all("div")[0].get("class")[0])
+		i = i + 1
 
-
-	best = "the best magnet"
-
-	if(best != ""):
-		print('add -p /home/<user>/Downloads/ ' + best)
-
-		hey = input("\n\n Copy the the contect and press enter")
-
-		os.system('deluge -u console')
-"""
+	max_possible = -999
+	index = -1
+	for i in range(count):
+		div = int(movie[i][2])/int(movie[i][3])
+		if(div>max_possible):
+			max_possible = div
+			index = i
+	best = movie[index][0]
+	
+	choice = input('Download Using\n1. Aria2\n2. Deluge\n3. Magnet Link\n> ')
+	stop = True
+	while(stop):
+		if(choice==1):
+			stop = False
+			os.system('aria2c '+best)
+			print('Download Complete')
+		elif(choice==2):
+			stop = False
+			print('add -p /home/<user>/Downloads/ ' + best)
+			input("\n\n Copy the the contect and press enter")
+			os.system('deluge -u console')
+		elif(choice==3):
+			stop = False			
+			print(best)
+		else:   
+			print('Invalid choice. Try Again!!!')
+			choice = input('Download Using\n1. Aria2\n2. Deluge\n3. Magnet Link\n> ')
