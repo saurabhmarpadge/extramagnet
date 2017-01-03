@@ -6,11 +6,6 @@ Download your favorite movie.
 
 - It takes movie name as a **Input**
 - It will find all magnet links from the site and return it to the program.
-- Then *Ranking algorithm* will be applied to find the best magnetlink.
-- Now it will pass to deluge-console to download
+- Then Seeds and Leached will be compared to find the best magnetlink.
+- Get the Magnet Link or Download using client
 
-##Following are the dependencies to run the code
-
-- [x] BeautifulSoup4
-- [x] requests
-- [x] deluge-console
