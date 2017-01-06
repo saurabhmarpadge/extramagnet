@@ -57,16 +57,16 @@ else:
 	choice = input('Download Using\n1. Aria2\n2. Deluge\n3. Magnet Link\n> ')
 	stop = True
 	while(stop):
-		if(choice==1):
+		if(choice=='1'):
 			stop = False
 			os.system('aria2c '+best)
 			print('Download Complete')
-		elif(choice==2):
+		elif(choice=='2'):
 			stop = False
 			print('add -p /home/<user>/Downloads/ ' + best)
 			input("\n\n Copy the the contect and press enter")
 			os.system('deluge -u console')
-		elif(choice==3):
+		elif(choice=='3'):
 			stop = False			
 			print(best)
 		else:   
